@@ -514,12 +514,7 @@ class Robinhood(InstrumentManager, SessionManager):
         else:
             _expiration_dates_string = expiration_dates
         chain_id = self.get_url(urls.build_chain(instrument_id))["results"][0]["id"]
-        return [
-            contract
-            for contract in self.get_url(
-                urls.options(chain_id, _expiration_dates_string, option_type)
-            )["results"]
-        ]
+        return self.get_url(urls.build_options(chain_id, _expiration_dates_string, option_type)).get("results")
 
     # TODO: the endpoint `option_market_data` doesn't exist
     # def get_option_market_data(self, optionid):
@@ -576,9 +571,9 @@ class Robinhood(InstrumentManager, SessionManager):
         else:
             option_id = results[0]["id"]
             result = self.get_option_marketdata(option_id)
-            params["ask"] = "{} x {}".format(result["ask_size"], result["ask_price"])
-            params["bid"] = "{} x {}".format(result["bid_size"], result["bid_price"])
-            return params
+            # params["ask"] = "{} x {}".format(result["ask_size"], result["ask_price"])
+            # params["bid"] = "{} x {}".format(result["bid_size"], result["bid_price"])
+            return result
 
     ###########################################################################
     #                           GET FUNDAMENTALS

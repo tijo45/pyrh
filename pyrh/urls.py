@@ -172,7 +172,8 @@ def build_chain(instrument_id: str) -> URL:
 
     """
     return (
-        OPTIONS_CHAIN_BASE.with_query(equity_instrument_ids=f"{instrument_id}") / "/"
+        # OPTIONS_CHAIN_BASE.with_query(equity_instrument_ids=f"{instrument_id}") / "/"
+        OPTIONS_CHAIN_BASE.with_query(equity_instrument_ids=f"{instrument_id}")
     )  # TODO: find out if this trailing slash is required.
 
 
@@ -186,9 +187,14 @@ def build_options(chain_id: str, dates: str, option_type: str) -> URL:
         dates: The range of dates to procure # TODO: document the format of the dates
         option_type: The type of the option # TODO: document the types
     """
+    print("this is the options url " + str(OPTIONS_INSTRUMENTS_BASE.with_query(
+        chain_id=f"{chain_id}",
+        state="active",
+        tradability="tradable",
+        type=f"{option_type}",
+    )))
     return OPTIONS_INSTRUMENTS_BASE.with_query(
         chain_id=f"{chain_id}",
-        expiration_dates=f"{dates}",
         state="active",
         tradability="tradable",
         type=f"{option_type}",
